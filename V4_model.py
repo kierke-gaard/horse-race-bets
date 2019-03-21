@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+# %% import of packages
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
@@ -10,10 +10,11 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 import lightgbm as lgb
 
+# %% import data
 x_train=pd.read_json("NEW TRAINING DATA - August 2017 to September 2018.json", lines=False, orient='columns')
-x_test=pd.read_json("NEW TEST DATA - October 2018 to February 2019.json", lines=False, orient='columns')
+x_test=pd.read_json("NEW TEST DATA - October 2018 to March 2019.json", lines=False, orient='columns')
 
-
+# %% Transform data
 x_train['result']=x_train['result'].replace(['np',5],0)
 x_train['age']=x_train['age'].fillna((x_train['age'].mean()))
 x_train['humidity']=x_train['humidity'].fillna(method='bfill')
@@ -26,8 +27,11 @@ x_train['trackRating']=x_train['trackRating'].fillna((x_train['trackRating'].mea
 x_train['weather']=x_train['weather'].fillna(method='bfill')
 x_train['windspeed']=x_train['windspeed'].fillna((x_train['windspeed'].mean()))
 
+# %% Encode data
 x_train.drop(['horseName','jockeyName','trainerName','careerWin', 'deadPlace', 'deadWin','fastPlace', 'fastWin', 'heavyPlace', 'heavyWin','horseLastMonth', 
 'horseTrend','jockeyClaim','slowPlace','trackCondition','venueDistancePlace','venueDistanceWin','bettingOdds'],axis=1,inplace=True)
+
+
 
 lb = LabelEncoder()
 x_train["class"] = lb.fit_transform(x_train["class"])
@@ -41,13 +45,14 @@ x_train[cols] = x_train[cols].apply(pd.to_numeric, errors='coerce')
 y_train=x_train['result']
 x_train.drop(['result','date'],axis=1,inplace=True)
 
+# acount for imbalances
 os=SMOTE(random_state=15)
 x_train_os, y_train_os=os.fit_sample(x_train, y_train)
 
 scaler = MinMaxScaler(feature_range=(0, 1))
 x_train_os = scaler.fit_transform(x_train_os)
 
-
+# %% Calibrate Model
 """To retrain the model on new training data kindly remove "#" from all below lines of code"""
 model= lgb.LGBMClassifier(learning_rate=0.1,num_leaves=21,n_estimators=500,min_child_samples=10,min_data_in_leaf=15,boosting_type='dart',verbosity=3,random_state=15)
 model.fit(x_train_os,y_train_os)
@@ -55,7 +60,7 @@ model.fit(x_train_os,y_train_os)
 """saving model To save new trained model kindly remove "#" from below line of code"""
 model.booster_.save_model('horse_race_prediction.txt')
 
-
+# %% Transform test data in the same fashion as train data
 x_test['result']=x_test['result'].replace(['np',5],0)
 x_test['age']=x_test['age'].fillna((x_test['age'].mean()))
 x_test['humidity']=x_test['humidity'].fillna(method='bfill')
@@ -86,17 +91,19 @@ x_test.drop(['result','date'],axis=1,inplace=True)
 scaler = MinMaxScaler(feature_range=(0, 1))
 x_test = scaler.fit_transform(x_test)
 
-
+# %% Evaluate Model
 """loading saved model"""
 clf = lgb.Booster(model_file='horse_race_prediction.txt')
 
 
 train_pred=clf.predict(x_train_os)
+# why 5 probabilities?
 train_preds_os=np.argmax(train_pred,axis=1)
 
 test_pred=clf.predict(x_test)
 test_preds_os=np.argmax(test_pred, axis=1)
 
+# y_test - actual rank, train_preds_os - predicted rank
 train_accuracy_os = accuracy_score(y_train_os,train_preds_os)
 test_accuracy_os = accuracy_score(y_test, test_preds_os)
 print('Train accuracy :', train_accuracy_os)
@@ -129,6 +136,10 @@ predictions_df = pd.DataFrame({'id':x_test_RI,
                               'Probablilty of Second Position  (Likelihood)' : predictions_prob[:,2]*100, 
                                'Probablilty of Third Position  (Likelihood)' : predictions_prob[:,3]*100,
                               'Probablilty of Fourth Position  (Likelihood)' : predictions_prob[:,4]*100})
+
+#Relevant METRIC 
+print('Probability to predict the first place right:',
+      len(predictions_df[(predictions_df['True Position']==1) & (predictions_df['Predicted Position']==1)])/len(predictions_df[predictions_df['True Position']==1]))
 
 #saving results in csv format
 predictions_df.to_csv("result.csv", index=False)

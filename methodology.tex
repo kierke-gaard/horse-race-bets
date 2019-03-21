@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{Optimize Betting Strategies}
+\author{Jan Hendrik Clausen}
+\date{March 2019}
+
+\begin{document}
+\maketitle
+
+\section{General Setup and Objective}
+In general we want to find out how much to bet that a certain horse ends up at a certain rank in a race. 
+We assume that a bookmaker will pay us a rate $r$ for a bet which is a multiple of the stake. The pay-off function for 1\$ is then
+\begin{align*}
+  m = & r-1 \text{, in case of win} \\
+      & -1 \text{, else.}
+\end{align*}
+Note that for each Dollar your return is $m$, i.e. when for a stake $s$ the return is $m*s$.
+
+
+There is a history of horse races with horse performances and conditions of the race. From this history the rank probability $\hat p$ for each horse in the next race can be estimated. Then, the expected\footnote{Expected value or $E$ is meant in the sense of probability theory, recall e.g. \href{https://en.wikipedia.org/wiki/Expected\_value}. It means if you gamble many times and average over your wins and losses, you come close to this number. The more often you gamble the closer you get. See also law of large numbers \herf{https://en.wikipedia.org/wiki/Law\_of\_large\_numbers}} pay-off function for a single bet of a horse to be at a certain rank would be
+\begin{equation}\label{eq:expectation}
+ E_{\hat p}[m] = \hat p * (r-1) + (1- \hat p) * -1 = \hat p *r -1
+\end{equation}
+under the estimated probability measure, i.e. given our view of the world is true. Again when the stake is not 1\$ the outcome would be a simple multiple of this stake.
+
+
+Under the assumption that the bookmaker's world is true the expected pay-off would be zero if ignoring the fees for now. Meaning that gambling is a fair game in which no gain or loss can be expected on average in the long run:
+$$E_{p}[m] = p * r -1 = 0$$
+Where the bookmaker's probability measure $p$ is implied by the rates $p = \frac{1}{r}$. Meaning that the bookmaker utilizes all the information he/the market has about the world, translates it to probabilities and then sets the rates. With this in mind we revise our expected pay-off function of \eqref{eq:expectation}
+\begin{equation}\label{eq:expectation2}
+ E_{\hat p}[m] = \frac{\hat p }{p} -1
+\end{equation}
+It turns out that whenever the bookmaker underestimates the probability of an outcome, i.e. if $p<\hat p$, we shall bet on it and win for each Dollar invested the amount according to \eqref{eq:expectation2}. Of course, only if our world view is correct.
+For instance, if the bookmaker or market believes that a certain horse will win (or end up at a certain rank) with a probability of $p=0.3$, but the true probability is $\hat p=0.4$ and we know it, then our expected pay-off is $1/3$, meaning that for a stake of 1000\$ the return would be 333.33\$ on average.
+
+\section{Respecting Constraints}
+Reflecting the previous chapter betting is easy, just invest in bets where you know better then the bookmaker and get a positive return on average. But there are two major catches:
+\begin{itemize}
+\item How confident are you that your probability estimations are good? Are they derived just from a couple of observations, or a rather long and useful history? Your strategy should reflect that by incorporating \emph{confidence intervals} for your probability estimations.
+\item You can only take advantage of your structural superior knowledge if you play many times. If you play enough your return will be granted. But what if you run out of capital in the meantime (recalling gambler's ruin problem)? Your strategy cannot be independent from your resources and your will to use them, but instead be a function of your \emph{risk appetite}. 
+\end{itemize} 
+
+\subsection{Confidence of Probability Estimation}
+Your calibration algorithm should be able to provide measures of confidence for the probability point estimations. These confidence intervals have tremendous impact on your expected gain. The expected pay-off depends on the uncertainty fluctuation $\beta$ in the following way
+\begin{equation}\label{eq:expectation3}
+   E_{\hat p} [m] = \frac {\hat p \pm \beta}{p} - 1 = (\hat p \pm \beta) *  r -1
+\end{equation}
+Note that the lower the probability of an event (or the higher the rate), the stronger is the leverage of the uncertainty.
+
+Say in the example above the probability estimation is rather vague with a deviation of $\pm 0.2$ with a confidence level of $95\%$, i.e. we believe that $\hat p \in [0.2;0.6]$. This translates into an expected pay-off of
+\begin{equation}
+E_{\hat p} [m] = \frac {\hat 0.4 \pm \beta}{0.3} - 1 = [\frac{-1}3; 1]
+\end{equation}
+It turns out that we cannot rule out (given our confidence level) a risk to loose one third of our investment systematically and on average! 
+
+\subsection{The Better's Appetite to risk Ruin}
+As said before, you have to gamble many times to utilize any advantage. But if you bet many times, it cannot be ruled out that there will be series or even long series of bad luck. In the long run these series will be sooner or later compensated by good luck phases. But what if late is too late, if all resources have been exploited already. This can happen. The question is by what chance would you deliberately attribute to this event. This is called \emph{risk-appetite}.
+
+The risk appetite is usually expressed by the ruin or maximum loss probability a gambler is willing to accept. It is important that the gambler knows his appetite and meticulously sets this probability.
+
+One Example, say a gambler bets $k$ (e.g. 100) times 1\$ on an event which occurs with a probability $\hat p$ (0.1) and the market has attributed to it $p$ (0.095). Following equation \eqref{eq:expectation2} the average pay-off would be positive (5.26)
+\begin{equation}
+    E_{\hat p}\left[ \sum_{i=1}^k m \right] = k(\frac{\hat p}p -1)
+\end{equation}
+as on average losses occur $(1-p)*k$ times. But with a probability (5.8\%) of 
+\begin{equation}
+    \alpha = P_{\hat p}\left\{ \text{Number of losses} \geq m \right\} = \sum_{\ell=m}^k \binom{k}{l}(1-p)^\ell p^{k-\ell}
+\end{equation}
+losses occur $m$ times (95) during the betting period. That translates into a loss of at least $m-(k-m)/p$ (47.37\$). That is, if you deem to set aside reserves of less than 47.37\$ you will experience bankruptcy with a probability of 5.8\% in your next betting period! But you can control for that by calibrating your stakes, reserves and risk appetite.
+
+\section{Recommendations and Estimations of Effort}
+We recommend to work on the following
+\begin{enumerate}
+    \item Improving the probability estimations. It doesn't matter, if these are probability for the first place or any other. All what counts is the height of the knowledge advantage, i.e. in the terms above \eqref{eq:expectation2} the difference between $\hat p$ and $p$. This would incorporate the following tasks:
+    \item Maybe even more important: Adding certainty boundaries to the estimations. This is eminent for any betting, see formula \eqref{eq:expectation3}
+    \item After that taking care of a holistic betting strategy by diligently arranging the triangle of risk appetite, reserves and stakes.
+\end{enumerate}
+
+\end{document}
