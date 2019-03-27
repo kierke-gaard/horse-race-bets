@@ -9,3 +9,5 @@ docs/methodology.out
 docs/methodology.pdf
 docs/methodology.synctex.gz
 texput.log
+docs/methodology.fls
+docs/methodology.fdb_latexmk
