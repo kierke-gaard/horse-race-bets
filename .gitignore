@@ -11,3 +11,5 @@ docs/methodology.synctex.gz
 texput.log
 docs/methodology.fls
 docs/methodology.fdb_latexmk
+.vscode/.ropeproject/config.py
+.vscode/.ropeproject/objectdb

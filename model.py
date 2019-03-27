@@ -15,7 +15,7 @@ import lightgbm as lgb
 
 # %% import data
 train_raw = pd.read_json("NEW TRAINING DATA - August 2017 to September 2018.json", lines=False, orient='columns')
-test_raw = pd.read_json("NEW TEST DATA - October 2018 to March 2019.json", lines=False, orient='columns')[:10000]
+test_raw = pd.read_json("NEW TEST DATA - October 2018 to March 2019.json", lines=False, orient='columns')[:10655]
 # Notes on data:
 #  * each row represents an outcome of a horse in a race, id=runnerID
 
@@ -89,8 +89,7 @@ def preprocess(x, cols_exclude):
       x.drop(cols_exclude, axis=1, inplace=True)
 
       # acount for imbalances by interpolation
-      os = SMOTE(random_state=15)
-      x, y = os.fit_sample(x, y)
+      x, y = SMOTE(random_state=15).fit_sample(x, y)
 
       # Normalizing
       scaler = MinMaxScaler(feature_range=(0, 1))
@@ -101,19 +100,21 @@ def preprocess(x, cols_exclude):
 x_train, y_train = preprocess(train_raw, cols_exclude)
 x_test, y_test = preprocess(test_raw, cols_exclude)
 
+# test_raw[10655:10657]
+
 # %% Calibrate Model
-model = lgb.LGBMClassifier(learning_rate=0.1,
-                          num_leaves=21,
-                          n_estimators=1, # 500
-                          min_child_samples=10,
-                          min_data_in_leaf=15,
-                          boosting_type='dart',
-                          verbosity=3,
-                          random_state=15)
 load_model_and_not_fit = False
 if load_model_and_not_fit:
       model = lgb.Booster(model_file='horse_race_prediction.txt')
 else:
+      model = lgb.LGBMClassifier(learning_rate=0.1,
+                              num_leaves=21,
+                              n_estimators=500,
+                              min_child_samples=10,
+                              min_data_in_leaf=15,
+                              boosting_type='dart',
+                              verbosity=3,
+                              random_state=15)
       model.fit(x_train, y_train)
       model.booster_.save_model('horse_race_prediction.txt')
 
