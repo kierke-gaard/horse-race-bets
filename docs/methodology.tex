@@ -1,6 +1,15 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+ 
+\urlstyle{same}
 
 \title{Optimize Betting Strategies}
 \author{Jan Hendrik Clausen}
@@ -19,7 +28,7 @@ We assume that a bookmaker will pay us a rate $r$ for a bet which is a multiple 
 Note that for each Dollar your return is $m$, i.e. when for a stake $s$ the return is $m*s$.
 
 
-There is a history of horse races with horse performances and conditions of the race. From this history the rank probability $\hat p$ for each horse in the next race can be estimated. Then, the expected\footnote{Expected value or $E$ is meant in the sense of probability theory, recall e.g. \href{https://en.wikipedia.org/wiki/Expected\_value}. It means if you gamble many times and average over your wins and losses, you come close to this number. The more often you gamble the closer you get. See also law of large numbers \herf{https://en.wikipedia.org/wiki/Law\_of\_large\_numbers}} pay-off function for a single bet of a horse to be at a certain rank would be
+There is a history of horse races with horse performances and conditions of the race. From this history the rank probability $\hat p$ for each horse in the next race can be estimated. Then, the expected\footnote{Expected value or $E$ is meant in the sense of probability theory, recall e.g. \href{Exprected-Value-Wiki}{https://en.wikipedia.org/wiki/Expected\_value}. It means if you gamble many times and average over your wins and losses, you come close to this number. The more often you gamble the closer you get. See also law of large numbers \href{LLN-Wiki}{https://en.wikipedia.org/wiki/Law\_of\_large\_numbers}} pay-off function for a single bet of a horse to be at a certain rank would be
 \begin{equation}\label{eq:expectation}
  E_{\hat p}[m] = \hat p * (r-1) + (1- \hat p) * -1 = \hat p *r -1
 \end{equation}
