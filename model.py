@@ -106,9 +106,6 @@ def preprocess(x, cols_exclude):
       y = x['result']
       x.drop(cols_exclude, axis=1, inplace=True)
 
-      # acount for imbalances by interpolation
-      x, y = SMOTE(random_state=15).fit_sample(x, y)
-
       # Normalizing
       scaler = MinMaxScaler(feature_range=(0, 1))
       x = scaler.fit_transform(x)
@@ -116,6 +113,8 @@ def preprocess(x, cols_exclude):
       return x, y
 
 x_train, y_train = preprocess(train_raw, cols_exclude)
+#acount for imbalances by interpolation
+# x_train, y_train = SMOTE(random_state=15).fit_sample(x_train, y_train)
 x_test, y_test = preprocess(test_raw, cols_exclude)
 
 # test_raw[10655:10657]

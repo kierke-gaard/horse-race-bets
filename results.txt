@@ -1,5 +1,5 @@
-Date: 2019-03-28 13:37:29.898984
-Running Time: 0:06:17
+Date: 2019-03-28 14:01:25.072998
+Running Time: 0:00:11
 Experimental Setup:
 Excluded Cols['horseName', 'jockeyName', 'trainerName', 'careerWin', 'deadPlace', 'deadWin', 'fastPlace', 'fastWin', 'heavyPlace', 'heavyWin', 'horseLastMonth', 'horseTrend', 'jockeyClaim', 'slowPlace', 'trackCondition', 'venueDistancePlace', 'venueDistanceWin', 'bettingOdds', 'result', 'date']
 
@@ -8,60 +8,59 @@ ModelLightGBM classifier.
 Model parameters{'boosting_type': 'gbdt', 'class_weight': None, 'colsample_bytree': 1.0, 'importance_type': 'split', 'learning_rate': 0.1, 'max_depth': -1, 'min_child_samples': 10, 'min_child_weight': 0.001, 'min_split_gain': 0.0, 'n_estimators': 40, 'n_jobs': -1, 'num_leaves': 21, 'objective': None, 'random_state': 15, 'reg_alpha': 0.0, 'reg_lambda': 0.0, 'silent': True, 'subsample': 1.0, 'subsample_for_bin': 200000, 'subsample_freq': 0, 'min_data_in_leaf': 15, 'verbosity': 3}
 
 
-
 --- OUT OF SAMPLE EVALUATION ------------------------
-Accuracy: 0.4144279368969214
-Precision for first place: 0.42631140716069943
+Accuracy: 0.6197090567808541
+Precision for first place: 0.3854748603351955
 
 Confusion Matrix
 -------------------------------
-Predicted     0     1     2     3     4    All
-True                                          
-0          5745   310   155   204   115   6529
-1           595  2560  1029  1141  1204   6529
-2           715  1617   999  1407  1791   6529
-3           812   876   836  1498  2507   6529
-4           744   642   812  1604  2727   6529
-All        8611  6005  3831  5854  8344  32645
+Predicted      0    1   2   3   4    All
+True                                    
+0           6444   73   6   1   5   6529
+1            919  138  15   6   7   1085
+2            984   85   6   2   7   1084
+3            986   39   6   8   8   1047
+4            875   23   5   0   7    910
+All        10208  358  38  17  34  10655
 
 Classification Report
 -------------------------------
               precision    recall  f1-score   support
 
-           0       0.67      0.88      0.76      6529
-           1       0.43      0.39      0.41      6529
-           2       0.26      0.15      0.19      6529
-           3       0.26      0.23      0.24      6529
-           4       0.33      0.42      0.37      6529
+           0       0.63      0.99      0.77      6529
+           1       0.39      0.13      0.19      1085
+           2       0.16      0.01      0.01      1084
+           3       0.47      0.01      0.02      1047
+           4       0.21      0.01      0.01       910
 
-   micro avg       0.41      0.41      0.41     32645
-   macro avg       0.39      0.41      0.39     32645
-weighted avg       0.39      0.41      0.39     32645
+   micro avg       0.62      0.62      0.62     10655
+   macro avg       0.37      0.23      0.20     10655
+weighted avg       0.51      0.62      0.50     10655
 --- IN SAMPLE EVALUATION ------------------------------
-Accuracy: 0.5049314173742652
-Precision for first place: 0.45530712158683695
+Accuracy: 0.629419337800812
+Precision for first place: 0.472630173564753
 
 Confusion Matrix
 -------------------------------
-Predicted      0      1      2      3      4    All
-True                                               
-0          17412    705    174     47     34  18372
-1           1975   9021   2621   1865   2890  18372
-2           2348   4481   5936   1939   3668  18372
-3           2605   3300   2621   5116   4730  18372
-4           2714   2306   2504   1950   8898  18372
-All        27054  19813  13856  10917  20220  91860
+Predicted      0     1    2   3    4    All
+True                                       
+0          18147   210    7   2    6  18372
+1           2268   708    6   1    8   2991
+2           2611   268   97   4   10   2990
+3           2730   187    8  49   16   2990
+4           2749   125    7   3   66   2950
+All        28505  1498  125  59  106  30293
 
 Classification Report
 -------------------------------
               precision    recall  f1-score   support
 
-           0       0.64      0.95      0.77     18372
-           1       0.46      0.49      0.47     18372
-           2       0.43      0.32      0.37     18372
-           3       0.47      0.28      0.35     18372
-           4       0.44      0.48      0.46     18372
+           0       0.64      0.99      0.77     18372
+           1       0.47      0.24      0.32      2991
+           2       0.78      0.03      0.06      2990
+           3       0.83      0.02      0.03      2990
+           4       0.62      0.02      0.04      2950
 
-   micro avg       0.50      0.50      0.50     91860
-   macro avg       0.49      0.50      0.48     91860
-weighted avg       0.49      0.50      0.48     91860
+   micro avg       0.63      0.63      0.63     30293
+   macro avg       0.67      0.26      0.25     30293
+weighted avg       0.65      0.63      0.51     30293
