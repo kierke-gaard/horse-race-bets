@@ -130,7 +130,7 @@ else:
                               n_estimators=n_estimators,
                               min_child_samples=10,
                               min_data_in_leaf=15,
-                              boosting_type='dart',
+                              boosting_type='gbdt',
                               verbosity=3,
                               random_state=15)
       model.fit(x_train, y_train)
