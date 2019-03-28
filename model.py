@@ -21,7 +21,10 @@ import datetime as dt
 #  3. unbalanced dataset: 
 #     replace smote with waits in gmb light classweight
 # Notes
-#  - scaling makes sense
+#  - scaling has no effect
+#  - smote actually introduce an unwanted bias
+#  - other balancing methods have negative effects: class_weight='balanced'
+
 n_train, n_test = 30373, 10655
 # 1000, 1000
 n_estimators = 40
@@ -52,7 +55,6 @@ def histograms_of_frequencies(df: pd.DataFrame):
 if univariate_statistics:
       histograms_of_frequencies(train_raw)
       attribute_characteristics_in_test_set(train_raw, test_raw)
-# Takeaway: Don't drop anything fo the categorical, maybe horseanem with 72% prevalence in test set
 
 # %% Transform data
 cols_exclude = \
@@ -92,7 +94,7 @@ def preprocess(x, cols_exclude):
       #x['horseName']=x['horseName'].fillna()
 
       # encode categories with numbers
-      x['result']=x['result'].replace(['np',5],0)
+      x['result']=x['result'].replace(['np',5,4,3,2],0)
       lb = LabelEncoder()
       x["class"] = lb.fit_transform(x["class"])
       x["sex"] = lb.fit_transform(x["sex"])
@@ -117,7 +119,7 @@ if load_model_and_not_fit:
       model = lgb.Booster(model_file='horse_race_prediction.txt')
 else:
       model = lgb.LGBMClassifier(learning_rate=0.1,
-                              num_leaves=21, # max tree leaves: remove?
+                              num_leaves=21,
                               n_estimators=n_estimators,
                               min_child_samples=10,
                               min_data_in_leaf=15,
