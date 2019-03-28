@@ -1,3 +1,12 @@
+Date: 2019-03-28 12:52:15.175059
+Running Time: 0:07:24.651772
+Experimental Setup:
+Excluded Cols['horseName', 'jockeyName', 'trainerName', 'careerWin', 'deadPlace', 'deadWin', 'fastPlace', 'fastWin', 'heavyPlace', 'heavyWin', 'horseLastMonth', 'horseTrend', 'jockeyClaim', 'slowPlace', 'trackCondition', 'venueDistancePlace', 'venueDistanceWin', 'bettingOdds', 'result', 'date']
+
+Data:30373, 10655
+ModelLightGBM classifier.
+Model parameters{'boosting_type': 'dart', 'class_weight': None, 'colsample_bytree': 1.0, 'importance_type': 'split', 'learning_rate': 0.1, 'max_depth': -1, 'min_child_samples': 10, 'min_child_weight': 0.001, 'min_split_gain': 0.0, 'n_estimators': 500, 'n_jobs': -1, 'num_leaves': 21, 'objective': None, 'random_state': 15, 'reg_alpha': 0.0, 'reg_lambda': 0.0, 'silent': True, 'subsample': 1.0, 'subsample_for_bin': 200000, 'subsample_freq': 0, 'min_data_in_leaf': 15, 'verbosity': 3}
+
 --- IN SAMPLE EVALUATION ------------------------------
 Accuracy: 0.6226431526235576
 Precision for first place: 0.5777684077373109

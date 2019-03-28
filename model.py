@@ -12,10 +12,17 @@ from sklearn.metrics import classification_report, accuracy_score, precision_sco
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 import lightgbm as lgb
+import datetime as dt
+
+# %% Experimental Parameters
+n_train, n_test = 30373, 10655 #1000, 1000
+n_estimators = 500
+univariate_statistics = False
+start_time = dt.datetime.now().replace(microsecond=0)
 
 # %% import data
-train_raw = pd.read_json("NEW TRAINING DATA - August 2017 to September 2018.json", lines=False, orient='columns')
-test_raw = pd.read_json("NEW TEST DATA - October 2018 to March 2019.json", lines=False, orient='columns')[:10655]
+train_raw = pd.read_json("NEW TRAINING DATA - August 2017 to September 2018.json", lines=False, orient='columns')[:n_train]
+test_raw = pd.read_json("NEW TEST DATA - October 2018 to March 2019.json", lines=False, orient='columns')[:n_test]
 # Notes on data:
 #  * each row represents an outcome of a horse in a race, id=runnerID
 
@@ -34,12 +41,14 @@ def histograms_of_frequencies(df: pd.DataFrame):
             df[c].value_counts().plot(title=c);
             plt.pause(1)
 
-histograms_of_frequencies(train_raw)
-attribute_characteristics_in_test_set(train_raw, test_raw)
+if univariate_statistics:
+      histograms_of_frequencies(train_raw)
+      attribute_characteristics_in_test_set(train_raw, test_raw)
 # Takeaway: Don't drop anything fo the categorical, maybe horseanem with 72% prevalence in test set
 
 # %% Transform data
-cols_exclude = ['horseName', 
+cols_exclude = \
+            ['horseName', 
               'jockeyName', 
               'trainerName',
               'careerWin',
@@ -72,6 +81,7 @@ def preprocess(x, cols_exclude):
       x['trackRating']=x['trackRating'].fillna((x['trackRating'].mean()))
       x['weather']=x['weather'].fillna(method='bfill')
       x['windspeed']=x['windspeed'].fillna((x['windspeed'].mean()))
+      #x['horseName']=x['horseName'].fillna()
 
       # encode categories with numbers
       x['result']=x['result'].replace(['np',5],0)
@@ -109,7 +119,7 @@ if load_model_and_not_fit:
 else:
       model = lgb.LGBMClassifier(learning_rate=0.1,
                               num_leaves=21,
-                              n_estimators=500,
+                              n_estimators=n_estimators,
                               min_child_samples=10,
                               min_data_in_leaf=15,
                               boosting_type='dart',
@@ -134,6 +144,14 @@ report = '--- IN SAMPLE EVALUATION ------------------------------\n' \
       + '\n\n--- OUT OF SAMPLE EVALUATION ------------------------\n' \
       + evaluate(model, x_test, y_test)
 
+# %% Print and Save Evaluation Report
 print(report)
 with open('results.txt', 'w') as f:
+      f.write('Date: ' + str(dt.datetime.now()) + '\n')
+      f.write('Running Time: ' + str(dt.datetime.now().replace(microsecond=0) - start_time) + '\n')
+      f.write('Experimental Setup:\n')
+      f.write('Excluded Cols' + str(cols_exclude) + '\n\n')
+      f.write('Data:' + str(n_train) + ', ' + str(n_test) + '\n')
+      f.write('Model' + model.__doc__ + '\n')
+      f.write('Model parameters' + str(model.get_params()) +'\n\n')
       f.write(report)
