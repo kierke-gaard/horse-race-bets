@@ -147,16 +147,17 @@ def evaluate(model, x, y_true):
             + classification_report(y_true, y_pred)
       return s
 
-report = '\n\n--- OUT OF SAMPLE EVALUATION ------------------------\n' \
+report = '\n--- OUT OF SAMPLE EVALUATION ------------------------\n' \
        + evaluate(model, x_test, y_test) \
        + '--- IN SAMPLE EVALUATION ------------------------------\n' \
        + evaluate(model, x_train, y_train) \
 
 # %% Print and Save Evaluation Report
-print(report)
+running_time = 'Running Time: ' + str(dt.datetime.now().replace(microsecond=0) - start_time) 
+print(running_time + '\n' + report)
 with open('results.txt', 'w') as f:
       f.write('Date: ' + str(dt.datetime.now()) + '\n')
-      f.write('Running Time: ' + str(dt.datetime.now().replace(microsecond=0) - start_time) + '\n')
+      f.write(running_time + '\n')
       f.write('Experimental Setup:\n')
       f.write('Excluded Cols' + str(cols_exclude) + '\n\n')
       f.write('Data:' + str(n_train) + ', ' + str(n_test) + '\n')

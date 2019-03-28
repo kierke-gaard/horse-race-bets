@@ -1,5 +1,5 @@
-Date: 2019-03-28 13:31:39.567831
-Running Time: 0:00:27
+Date: 2019-03-28 13:37:29.898984
+Running Time: 0:06:17
 Experimental Setup:
 Excluded Cols['horseName', 'jockeyName', 'trainerName', 'careerWin', 'deadPlace', 'deadWin', 'fastPlace', 'fastWin', 'heavyPlace', 'heavyWin', 'horseLastMonth', 'horseTrend', 'jockeyClaim', 'slowPlace', 'trackCondition', 'venueDistancePlace', 'venueDistanceWin', 'bettingOdds', 'result', 'date']
 
