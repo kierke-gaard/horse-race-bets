@@ -15,11 +15,6 @@ import lightgbm as lgb
 import datetime as dt
 
 # %% Experimental Parameters
-# ToDo
-#  2. concentrate on first place
-#  1. Decline n_estimators
-#  3. unbalanced dataset: 
-#     replace smote with waits in gmb light classweight
 # Notes
 #  - scaling has no effect
 #  - smote actually introduce an unwanted bias
@@ -58,9 +53,9 @@ if univariate_statistics:
 
 # %% Transform data
 cols_exclude = \
-            ['horseName', 
-              'jockeyName', 
-              'trainerName',
+            [#'horseName', 
+            #  'jockeyName', 
+            #   'trainerName',
               'careerWin',
               'deadPlace',
               'deadWin',
@@ -82,16 +77,15 @@ cols_exclude = \
 def preprocess(x, cols_exclude):
       # fill na
       x['age']=x['age'].fillna((x['age'].mean()))
-      x['humidity']=x['humidity'].fillna(method='bfill') # ?!!
-      x['jockeyClaim']=x['jockeyClaim'].interpolate() # ?!!
+      x['humidity']=x['humidity'].fillna(method='bfill') 
+      x['jockeyClaim']=x['jockeyClaim'].interpolate() 
       x['rating']=x['rating'].fillna((x['rating'].mean())) 
-      x['temperature']=x['temperature'].fillna(method='bfill') # ?!!
+      x['temperature']=x['temperature'].fillna(method='bfill') 
       x=x[pd.notnull(x['sex'])]
       x['trackCondition']=x['trackCondition'].fillna('GOOD')
       x['trackRating']=x['trackRating'].fillna((x['trackRating'].mean()))
       x['weather']=x['weather'].fillna(method='bfill')
       x['windspeed']=x['windspeed'].fillna((x['windspeed'].mean()))
-      #x['horseName']=x['horseName'].fillna()
 
       # encode categories with numbers
       x['result']=x['result'].replace(['np',5,4,3,2],0)

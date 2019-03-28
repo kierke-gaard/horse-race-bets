@@ -1,7 +1,7 @@
-Date: 2019-03-28 14:20:30.784108
-Running Time: 0:00:13
+Date: 2019-03-28 15:00:20.586588
+Running Time: 0:00:07
 Experimental Setup:
-Excluded Cols['horseName', 'jockeyName', 'trainerName', 'careerWin', 'deadPlace', 'deadWin', 'fastPlace', 'fastWin', 'heavyPlace', 'heavyWin', 'horseLastMonth', 'horseTrend', 'jockeyClaim', 'slowPlace', 'trackCondition', 'venueDistancePlace', 'venueDistanceWin', 'bettingOdds', 'result', 'date']
+Excluded Cols['careerWin', 'deadPlace', 'deadWin', 'fastPlace', 'fastWin', 'heavyPlace', 'heavyWin', 'horseLastMonth', 'horseTrend', 'jockeyClaim', 'slowPlace', 'trackCondition', 'venueDistancePlace', 'venueDistanceWin', 'bettingOdds', 'result', 'date']
 
 Data:30373, 10655
 ModelLightGBM classifier.
