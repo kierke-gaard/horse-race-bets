@@ -1,67 +1,67 @@
-Date: 2019-03-28 12:52:15.175059
-Running Time: 0:07:24.651772
+Date: 2019-03-28 13:23:02.274726
+Running Time: 0:00:26
 Experimental Setup:
 Excluded Cols['horseName', 'jockeyName', 'trainerName', 'careerWin', 'deadPlace', 'deadWin', 'fastPlace', 'fastWin', 'heavyPlace', 'heavyWin', 'horseLastMonth', 'horseTrend', 'jockeyClaim', 'slowPlace', 'trackCondition', 'venueDistancePlace', 'venueDistanceWin', 'bettingOdds', 'result', 'date']
 
 Data:30373, 10655
 ModelLightGBM classifier.
-Model parameters{'boosting_type': 'dart', 'class_weight': None, 'colsample_bytree': 1.0, 'importance_type': 'split', 'learning_rate': 0.1, 'max_depth': -1, 'min_child_samples': 10, 'min_child_weight': 0.001, 'min_split_gain': 0.0, 'n_estimators': 500, 'n_jobs': -1, 'num_leaves': 21, 'objective': None, 'random_state': 15, 'reg_alpha': 0.0, 'reg_lambda': 0.0, 'silent': True, 'subsample': 1.0, 'subsample_for_bin': 200000, 'subsample_freq': 0, 'min_data_in_leaf': 15, 'verbosity': 3}
+Model parameters{'boosting_type': 'dart', 'class_weight': None, 'colsample_bytree': 1.0, 'importance_type': 'split', 'learning_rate': 0.1, 'max_depth': -1, 'min_child_samples': 10, 'min_child_weight': 0.001, 'min_split_gain': 0.0, 'n_estimators': 40, 'n_jobs': -1, 'num_leaves': 21, 'objective': None, 'random_state': 15, 'reg_alpha': 0.0, 'reg_lambda': 0.0, 'silent': True, 'subsample': 1.0, 'subsample_for_bin': 200000, 'subsample_freq': 0, 'min_data_in_leaf': 15, 'verbosity': 3}
 
---- IN SAMPLE EVALUATION ------------------------------
-Accuracy: 0.6226431526235576
-Precision for first place: 0.5777684077373109
-
-Confusion Matrix
--------------------------------
-Predicted      0      1      2      3      4    All
-True                                               
-0          17855    451     36     12     18  18372
-1           1950  10962   1860   1324   2276  18372
-2           2345   3221   8909   1132   2765  18372
-3           2515   2529   1867   8287   3174  18372
-4           2599   1810   1719   1061  11183  18372
-All        27264  18973  14391  11816  19416  91860
-
-Classification Report
--------------------------------
-              precision    recall  f1-score   support
-
-           0       0.65      0.97      0.78     18372
-           1       0.58      0.60      0.59     18372
-           2       0.62      0.48      0.54     18372
-           3       0.70      0.45      0.55     18372
-           4       0.58      0.61      0.59     18372
-
-   micro avg       0.62      0.62      0.62     91860
-   macro avg       0.63      0.62      0.61     91860
-weighted avg       0.63      0.62      0.61     91860
 
 
 --- OUT OF SAMPLE EVALUATION ------------------------
-Accuracy: 0.39543574820033695
-Precision for first place: 0.4064661134163209
+Accuracy: 0.3997243069382754
+Precision for first place: 0.41971655505372996
 
 Confusion Matrix
 -------------------------------
 Predicted     0     1     2     3     4    All
 True                                          
-0          5213   347   339   306   324   6529
-1           405  2351  1557  1119  1097   6529
-2           554  1525  1400  1309  1741   6529
-3           624   875  1217  1463  2350   6529
-4           583   686  1207  1571  2482   6529
-All        7379  5784  5720  5768  7994  32645
+0          5334   428   267   260   240   6529
+1           561  2695   817   961  1495   6529
+2           760  1686   797  1117  2169   6529
+3           922   970   645  1155  2837   6529
+4           923   642   676  1220  3068   6529
+All        8500  6421  3202  4713  9809  32645
 
 Classification Report
 -------------------------------
               precision    recall  f1-score   support
 
-           0       0.71      0.80      0.75      6529
-           1       0.41      0.36      0.38      6529
-           2       0.24      0.21      0.23      6529
-           3       0.25      0.22      0.24      6529
-           4       0.31      0.38      0.34      6529
+           0       0.63      0.82      0.71      6529
+           1       0.42      0.41      0.42      6529
+           2       0.25      0.12      0.16      6529
+           3       0.25      0.18      0.21      6529
+           4       0.31      0.47      0.38      6529
 
    micro avg       0.40      0.40      0.40     32645
-   macro avg       0.38      0.40      0.39     32645
-weighted avg       0.38      0.40      0.39     32645
+   macro avg       0.37      0.40      0.37     32645
+weighted avg       0.37      0.40      0.37     32645
+--- IN SAMPLE EVALUATION ------------------------------
+Accuracy: 0.47209884607010666
+Precision for first place: 0.4263278126784694
+
+Confusion Matrix
+-------------------------------
+Predicted      0      1      2      3      4    All
+True                                               
+0          16499   1030    489    175    179  18372
+1           1763   8958   2623   1816   3212  18372
+2           2245   4905   5158   2055   4009  18372
+3           2611   3614   2754   4357   5036  18372
+4           2846   2505   2557   2069   8395  18372
+All        25964  21012  13581  10472  20831  91860
+
+Classification Report
+-------------------------------
+              precision    recall  f1-score   support
+
+           0       0.64      0.90      0.74     18372
+           1       0.43      0.49      0.45     18372
+           2       0.38      0.28      0.32     18372
+           3       0.42      0.24      0.30     18372
+           4       0.40      0.46      0.43     18372
+
+   micro avg       0.47      0.47      0.47     91860
+   macro avg       0.45      0.47      0.45     91860
+weighted avg       0.45      0.47      0.45     91860

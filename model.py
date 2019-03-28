@@ -15,8 +15,16 @@ import lightgbm as lgb
 import datetime as dt
 
 # %% Experimental Parameters
-n_train, n_test = 30373, 10655 #1000, 1000
-n_estimators = 500
+# ToDo
+#  2. concentrate on first place
+#  1. Decline n_estimators
+#  3. unbalanced dataset: 
+#     replace smote with waits in gmb light classweight
+# Notes
+#  - scaling makes sense
+n_train, n_test = 30373, 10655
+# 1000, 1000
+n_estimators = 40
 univariate_statistics = False
 start_time = dt.datetime.now().replace(microsecond=0)
 
@@ -118,7 +126,7 @@ if load_model_and_not_fit:
       model = lgb.Booster(model_file='horse_race_prediction.txt')
 else:
       model = lgb.LGBMClassifier(learning_rate=0.1,
-                              num_leaves=21,
+                              num_leaves=21, # max tree leaves: remove?
                               n_estimators=n_estimators,
                               min_child_samples=10,
                               min_data_in_leaf=15,
@@ -139,10 +147,10 @@ def evaluate(model, x, y_true):
             + classification_report(y_true, y_pred)
       return s
 
-report = '--- IN SAMPLE EVALUATION ------------------------------\n' \
-      + evaluate(model, x_train, y_train) \
-      + '\n\n--- OUT OF SAMPLE EVALUATION ------------------------\n' \
-      + evaluate(model, x_test, y_test)
+report = '\n\n--- OUT OF SAMPLE EVALUATION ------------------------\n' \
+       + evaluate(model, x_test, y_test) \
+       + '--- IN SAMPLE EVALUATION ------------------------------\n' \
+       + evaluate(model, x_train, y_train) \
 
 # %% Print and Save Evaluation Report
 print(report)
