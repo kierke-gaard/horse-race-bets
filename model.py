@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# %% import of packages
+# %% 
+# IMPORT PACKAGES
 from functools import partial, reduce
 import numpy as np
 import pandas as pd
-pd.set_option('display.max_rows', 100)
-pd.reset_option('display.max_columns', None)
 from sklearn.preprocessing import LabelEncoder
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import classification_report, accuracy_score, precision_score
@@ -14,23 +13,21 @@ from sklearn.preprocessing import MinMaxScaler
 import lightgbm as lgb
 import datetime as dt
 
-# %% Experimental Parameters
-# Notes
-#  - scaling has no effect
-#  - smote actually introduce an unwanted bias
-#  - other balancing methods have negative effects: class_weight='balanced'
+pd.set_option('display.max_rows', 100)
+pd.reset_option('display.max_columns', None)
 
-n_train, n_test = 30373, 10655
-# 1000, 1000
+# CONFIGURATION
 n_estimators = 40
 univariate_statistics = False
+load_model_and_not_fit = False
 start_time = dt.datetime.now().replace(microsecond=0)
 
-# %% import data
-train_raw = pd.read_json("NEW TRAINING DATA - August 2017 to September 2018.json", lines=False, orient='columns')[:n_train]
-test_raw = pd.read_json("NEW TEST DATA - October 2018 to March 2019.json", lines=False, orient='columns')[:n_test]
-# Notes on data:
-#  * each row represents an outcome of a horse in a race, id=runnerID
+# IMPORT DATA
+test_raw = pd.read_json(r"data/11am Test Data - October 2018 to April 2019.json",
+                          lines=False, orient='columns')
+train_raw = pd.read_json(r"data/11am Training Data - August 2017 to September 2018.json",
+                         lines=False, orient='columns')
+cols = set(train_raw.columns.values)
 
 # %% Univariate Statistics
 def attribute_characteristics_in_test_set(df_train: pd.DataFrame,  df_test: pd.DataFrame):
@@ -51,28 +48,31 @@ if univariate_statistics:
       histograms_of_frequencies(train_raw)
       attribute_characteristics_in_test_set(train_raw, test_raw)
 
+
 # %% Transform data
 cols_exclude = \
             [#'horseName', 
             #  'jockeyName', 
             #   'trainerName',
-              'careerWin',
-              'deadPlace',
-              'deadWin',
-              'fastPlace',
-              'fastWin',
-              'heavyPlace',
-              'heavyWin',
-              'horseLastMonth', 
-              'horseTrend',
-              'jockeyClaim',
-              'slowPlace',
-              'trackCondition',
-              'venueDistancePlace',
-              'venueDistanceWin',
-              'bettingOdds',
+            #   'careerWin',
+              'runnerID',
+            #   'deadPlace',
+            #   'deadWin',
+            #   'fastPlace',
+            #   'fastWin',
+            #   'heavyPlace',
+            #   'heavyWin',
+            #   'horseLastMonth', 
+            #   'horseTrend',
+            #   'jockeyClaim',
+            #   'slowPlace',
+            #   'trackCondition',
+            #   'venueDistancePlace',
+            #   'venueDistanceWin',
+            #   'bettingOdds',
               'result',
-              'date']
+              'date' # include season, month, weekday
+              ]
 
 def preprocess(x, cols_exclude):
       # fill na
@@ -86,6 +86,7 @@ def preprocess(x, cols_exclude):
       x['trackRating']=x['trackRating'].fillna((x['trackRating'].mean()))
       x['weather']=x['weather'].fillna(method='bfill')
       x['windspeed']=x['windspeed'].fillna((x['windspeed'].mean()))
+      x['bettingOds']=x['bettingOdds'].replace(0.,np.nan)
 
       # encode categories with numbers
       x['result']=x['result'].replace(['np',5,4,3,2],0)
@@ -108,7 +109,6 @@ x_train, y_train = preprocess(train_raw, cols_exclude)
 x_test, y_test = preprocess(test_raw, cols_exclude)
 
 # %% Calibrate Model
-load_model_and_not_fit = False
 if load_model_and_not_fit:
       model = lgb.Booster(model_file='horse_race_prediction.txt')
 else:
@@ -147,7 +147,6 @@ with open('results.txt', 'w') as f:
       f.write(running_time + '\n')
       f.write('Experimental Setup:\n')
       f.write('Excluded Cols' + str(cols_exclude) + '\n\n')
-      f.write('Data:' + str(n_train) + ', ' + str(n_test) + '\n')
       f.write('Model' + model.__doc__ + '\n')
       f.write('Model parameters' + str(model.get_params()) +'\n\n')
       f.write(report)

@@ -1,54 +1,55 @@
-Date: 2019-03-28 15:00:20.586588
-Running Time: 0:00:07
+Date: 2019-04-23 21:13:40.468053
+Running Time: 0:00:08
 Experimental Setup:
-Excluded Cols['careerWin', 'deadPlace', 'deadWin', 'fastPlace', 'fastWin', 'heavyPlace', 'heavyWin', 'horseLastMonth', 'horseTrend', 'jockeyClaim', 'slowPlace', 'trackCondition', 'venueDistancePlace', 'venueDistanceWin', 'bettingOdds', 'result', 'date']
+Excluded Cols['runnerID', 'result', 'date']
 
-Data:30373, 10655
 ModelLightGBM classifier.
 Model parameters{'boosting_type': 'gbdt', 'class_weight': None, 'colsample_bytree': 1.0, 'importance_type': 'split', 'learning_rate': 0.1, 'max_depth': -1, 'min_child_samples': 10, 'min_child_weight': 0.001, 'min_split_gain': 0.0, 'n_estimators': 40, 'n_jobs': -1, 'num_leaves': 21, 'objective': None, 'random_state': 15, 'reg_alpha': 0.0, 'reg_lambda': 0.0, 'silent': True, 'subsample': 1.0, 'subsample_for_bin': 200000, 'subsample_freq': 0, 'min_data_in_leaf': 15, 'verbosity': 3}
 
 
 --- OUT OF SAMPLE EVALUATION ------------------------
-Accuracy: 0.8986391365556077
-Precision for first place: 0.5316455696202531
-
-Confusion Matrix
--------------------------------
-Predicted      0   1    All
-True                       
-0           9533  37   9570
-1           1043  42   1085
-All        10576  79  10655
-
-Classification Report
--------------------------------
-              precision    recall  f1-score   support
-
-           0       0.90      1.00      0.95      9570
-           1       0.53      0.04      0.07      1085
-
-   micro avg       0.90      0.90      0.90     10655
-   macro avg       0.72      0.52      0.51     10655
-weighted avg       0.86      0.90      0.86     10655
---- IN SAMPLE EVALUATION ------------------------------
-Accuracy: 0.9062489684085432
-Precision for first place: 0.8952879581151832
+Accuracy: 0.8964095888925047
+Precision for first place: 0.558974358974359
 
 Confusion Matrix
 -------------------------------
 Predicted      0    1    All
 True                        
-0          27282   20  27302
-1           2820  171   2991
-All        30102  191  30293
+0          24683   86  24769
+1           2773  109   2882
+6              6    0      6
+All        27462  195  27657
 
 Classification Report
 -------------------------------
               precision    recall  f1-score   support
 
-           0       0.91      1.00      0.95     27302
-           1       0.90      0.06      0.11      2991
+           0       0.90      1.00      0.95     24769
+           1       0.56      0.04      0.07      2882
+           6       0.00      0.00      0.00         6
 
-   micro avg       0.91      0.91      0.91     30293
-   macro avg       0.90      0.53      0.53     30293
-weighted avg       0.91      0.91      0.87     30293
+   micro avg       0.90      0.90      0.90     27657
+   macro avg       0.49      0.34      0.34     27657
+weighted avg       0.86      0.90      0.85     27657
+--- IN SAMPLE EVALUATION ------------------------------
+Accuracy: 0.90086240875337
+Precision for first place: 0.7136258660508084
+
+Confusion Matrix
+-------------------------------
+Predicted      0    1    All
+True                        
+0          56830  124  56954
+1           6164  309   6473
+All        62994  433  63427
+
+Classification Report
+-------------------------------
+              precision    recall  f1-score   support
+
+           0       0.90      1.00      0.95     56954
+           1       0.71      0.05      0.09      6473
+
+   micro avg       0.90      0.90      0.90     63427
+   macro avg       0.81      0.52      0.52     63427
+weighted avg       0.88      0.90      0.86     63427
